@@ -31,6 +31,7 @@ include ("connect.php");
 
 </p>
 <a href="logout.php">Logout</a>
+<a href="createblog.php">create</a>
     </div>
 
 </body>
