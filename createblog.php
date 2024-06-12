@@ -1,28 +1,44 @@
+<?php
+session_start();
+include ("connect.php");
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO blogs (title, content) VALUES (?, ?)");
+    $stmt->bind_param("ss", $title, $content);
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        echo "New blog created successfully";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    // Close the statement
+    $stmt->close();
+}
+
+// Close the connection
+$conn->close();
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create New Post</title>
-  <link rel="stylesheet" href="style.css"> </head>
+    <title>Create Blog</title>
+</head>
 <body>
-  <header>
-    <h1>Create New Post</h1>
-  </header>
-  <main>
-    <?php if (isset($error_message)): ?>
-      <div class="error"><?php echo $error_message; ?></div>
-    <?php endif; ?>
 
-    <form action="" method="post">
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required>
+<h2>Create a New Blog</h2>
+<form method="post" action="">
+    Title: <input type="text" name="title" required><br><br>
+    Content: <br><textarea name="content" rows="10" cols="30" required></textarea><br><br>
+    <input type="submit" value="Submit">
+</form>
 
-      <label for="content">Content:</label>
-      <textarea id="content" name="content" rows="10" required></textarea>
-
-      <button type="submit">Create Post</button>
-    </form>
-  </main>
 </body>
 </html>
